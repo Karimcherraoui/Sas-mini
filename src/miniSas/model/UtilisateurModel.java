@@ -15,12 +15,13 @@ public class UtilisateurModel {
     Connection connecter = DbConnection.connecter();
 
     public boolean ajouterUtilisateur(Utilisateur utilisateur) {
-        String sqlQuery = "INSERT INTO utilisateur (nom, prenom) VALUES (?, ?);";
+        String sqlQuery = "INSERT INTO utilisateur (nom, prenom,numero) VALUES (?, ?,?);";
 
         try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
             prepare.setString(1, utilisateur.getNom());
             prepare.setString(2, utilisateur.getPrenom());
+            prepare.setInt(3, utilisateur.getNumero());
             int rowsUpdated = prepare.executeUpdate();
 
             prepare.close();
@@ -65,54 +66,7 @@ public class UtilisateurModel {
             return false;
         }
     }
-
-    public boolean supprimerUtilisateur(int utilisateurId) {
-        String sqlQuery = "DELETE FROM utilisateur WHERE id = ?;";
-
-        try {
-            PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
-            prepare.setInt(1, utilisateurId);
-            int rowsUpdated = prepare.executeUpdate();
-
-            prepare.close();
-
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public Utilisateur getUtilisateurById(int utilisateurId) {
-        String sqlQuery = "SELECT * FROM utilisateur WHERE id = ?;";
-
-        try {
-            PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
-            prepare.setInt(1, utilisateurId);
-
-            ResultSet resultSet = prepare.executeQuery();
-
-            if (resultSet.next()) {
-
-                String nom = resultSet.getString("nom");
-                String prenom = resultSet.getString("prenom");
-
-                Utilisateur utilisateur = new Utilisateur(nom, prenom);
-
-                resultSet.close();
-                prepare.close();
-
-                return utilisateur;
-            } else {
-                resultSet.close();
-                prepare.close();
-                return null;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
+    
 
     public Utilisateur getUtilisateurByNom(String nom) {
         String sqlQuery = "SELECT * FROM utilisateur WHERE nom = ?;";
@@ -124,10 +78,11 @@ public class UtilisateurModel {
             ResultSet resultSet = prepare.executeQuery();
 
             if (resultSet.next()) {
-
+                int id = resultSet.getInt("id");
                 String prenom = resultSet.getString("prenom");
+                int numero = resultSet.getInt("numero");
 
-                Utilisateur utilisateur = new Utilisateur(nom, prenom);
+                Utilisateur utilisateur = new Utilisateur(id,nom,prenom,numero);
 
                 resultSet.close();
                 prepare.close();
@@ -155,8 +110,11 @@ public class UtilisateurModel {
                 int id = result.getInt("id");
                 String nom = result.getString("nom");
                 String prenom = result.getString("prenom");
+                int numero = result.getInt("numero");
 
-                Utilisateur utilisateur = new Utilisateur(nom, prenom);
+
+
+                Utilisateur utilisateur = new Utilisateur(nom, prenom,numero);
                 utilisateurs.add(utilisateur);
             }
             result.close();

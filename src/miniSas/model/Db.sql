@@ -13,7 +13,9 @@ CREATE TABLE utilisateur
 (
     id     int(15) PRIMARY KEY AUTO_INCREMENT,
     nom    varchar(255),
-    prenom varchar(255)
+    prenom varchar(255),
+    numero int(15)
+
 );
 
 

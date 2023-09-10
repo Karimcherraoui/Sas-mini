@@ -21,6 +21,9 @@ public class Livre {
         this.auteur = auteur;
     }
 
+    public Livre() {
+    }
+
     public int getNumeroISBN() {
         return numeroISBN;
     }

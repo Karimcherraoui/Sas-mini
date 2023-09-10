@@ -131,10 +131,10 @@ public class LivreModel {
 
     }
 
-    public List<Livre> afficherTous() {
+    public List<Livre> afficherLivreDispo() {
         List<Livre> livres = new ArrayList<>();
 
-        String sqlQuery = "SELECT * from livre";
+        String sqlQuery = "SELECT * from livre WHERE statut = 'Disponible'";
         try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
 
@@ -144,6 +144,37 @@ public class LivreModel {
                 String titre = result.getString("titre");
                 String auteur = result.getString("auteur");
                 String statut = result.getString("statut");
+
+                Livre livre = new Livre(titre, auteur, numeroISBN,statut);
+                livres.add(livre);
+            }
+            result.close();
+            prepare.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+        return livres;
+    }
+
+
+    public List<Livre> afficherLivreEmprunte() {
+        List<Livre> livres = new ArrayList<>();
+
+        String sqlQuery = "SELECT * from livre";
+        try {
+            PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
+            ResultSet result = prepare.executeQuery();
+
+            while (result.next()) {
+                int numeroISBN = result.getInt("numeroISBN");
+                String titre = result.getString("titre");
+                String auteur = result.getString("auteur");
+                String statut = result.getString("statut");
+
+                String emprunteur = result.getString("statut");
+
 
                 Livre livre = new Livre(titre, auteur, numeroISBN,statut);
                 livres.add(livre);

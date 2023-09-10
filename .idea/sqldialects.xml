@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/miniSas/model/Db.sql" dialect="MySQL" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/cf0e33d6-0a24-407d-ad23-383d1dc12232/console_1.sql" dialect="MySQL" />
   </component>
 </project>
