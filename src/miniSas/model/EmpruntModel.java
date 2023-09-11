@@ -2,7 +2,6 @@ package miniSas.model;
 
 import miniSas.controller.Emprunt;
 import miniSas.controller.Livre;
-import miniSas.controller.Utilisateur;
 import miniSas.controller.livreEmprunte;
 
 import java.sql.Connection;
@@ -27,7 +26,6 @@ public class EmpruntModel {
 
 
         if (Objects.equals(livre.getStatut(), "Disponible")) {
-            System.out.println("livre");
             try {
 
                 PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
@@ -40,11 +38,7 @@ public class EmpruntModel {
 
                 prepare.close();
 
-                if (rowsUpdated > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return rowsUpdated > 0;
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
                 return false;
@@ -65,11 +59,7 @@ public class EmpruntModel {
             int rowsUpdated = prepare.executeUpdate();
             prepare.close();
 
-            if (rowsUpdated > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -98,8 +88,11 @@ public class EmpruntModel {
                         int ISBN = obtenirISBNParEmpruntId(empruntId);
                         PreparedStatement updateStatement = connecter.prepareStatement(updateQuery);
                         updateStatement.setInt(1, ISBN);
+
                         updateStatement.executeUpdate();
+
                         updateStatement.close();
+
                     }
                 }
             }
@@ -109,6 +102,28 @@ public class EmpruntModel {
             System.out.println(e.getMessage());
         }
     }
+
+    public void supprimerLivrePerdu() {
+        LivreModel livreModel = new LivreModel();
+        List<Livre> livres = livreModel.afficherLivrePerdu();
+
+        String deleteQuery = "DELETE FROM emprunt WHERE livre_ISBN = ?";
+
+        try {
+            PreparedStatement prepare = connecter.prepareStatement(deleteQuery);
+
+            for (Livre livre : livres) {
+                int ISBN = livre.getNumeroISBN();
+                prepare.setInt(1, ISBN);
+                prepare.executeUpdate();
+            }
+
+            prepare.close();
+        } catch (SQLException e) {
+            System.out.println("Une erreur s'est produite.");
+        }
+    }
+
 
     // Méthode pour obtenir l'ISBN d'un livre par ID d'emprunt
     private int obtenirISBNParEmpruntId(int empruntId) {
@@ -129,38 +144,7 @@ public class EmpruntModel {
     }
 
 
-    public List<Emprunt> afficherEmpruntsUtilisateur(int utilisateurId) {
-        List<Emprunt> emprunts = new ArrayList<>();
 
-        String sqlQuery = "SELECT * FROM emprunt WHERE emprunteur_id = ?";
-
-        try {
-            PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
-            prepare.setInt(1, utilisateurId);
-            ResultSet resultSet = prepare.executeQuery();
-
-            while (resultSet.next()) {
-                int empruntId = resultSet.getInt("id");
-                int livreId = resultSet.getInt("livre_id");
-                Date dateEmprunt = resultSet.getDate("date_emprunt");
-                Date dateRetour = resultSet.getDate("date_retour");
-
-                Livre livre = fetchLivreById(livreId);
-                Utilisateur emprunteur = fetchUtilisateurById(utilisateurId);
-
-                Emprunt emprunt = new Emprunt(livre, emprunteur, dateEmprunt, dateRetour);
-                emprunts.add(emprunt);
-            }
-
-            resultSet.close();
-            prepare.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-
-        return emprunts;
-    }
 
     public static List<livreEmprunte> obtenirLivreEmprunte() {
         List<livreEmprunte> livreEmpruntes = new ArrayList<>();
@@ -191,11 +175,5 @@ public class EmpruntModel {
     return livreEmpruntes;
     }
 
-    private Livre fetchLivreById(int livreId) {
-        return null;
-    }
 
-    private Utilisateur fetchUtilisateurById(int utilisateurId) {
-        return null;
-    }
 }

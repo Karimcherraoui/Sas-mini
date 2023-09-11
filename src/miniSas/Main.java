@@ -8,11 +8,9 @@ import miniSas.controller.livreEmprunte;
 import miniSas.model.*;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -26,7 +24,10 @@ public class Main {
         String response;
         boolean menu = true;
 
-            empruntModel.verifierStatutLivrePerdu();
+        empruntModel.verifierStatutLivrePerdu();
+
+//        empruntModel.supprimerLivrePerdu();
+
 
         while (menu) {
             System.out.println(ConsoleColors.BLUE_BRIGHT + "---------------------------------------------------------");
@@ -35,14 +36,15 @@ public class Main {
             System.out.println(ConsoleColors.WHITE_BRIGHT + "1. Ajouter un nouveau livre");
             System.out.println(ConsoleColors.WHITE_BRIGHT + "2. Ajouter un nouveau utilisateur");
             System.out.println("3. Afficher la liste complète des livres disponibles");
-            System.out.println("4. Rechercher un livre par son titre ou son auteur");
-            System.out.println("5. Emprunter un livre ");
-            System.out.println("6. Retourner un livre emprunté");
-            System.out.println("7. Afficher la liste des livres empruntés");
-            System.out.println("8. Supprimer un livre de la bibliothèque");
-            System.out.println("9. Modifier les informations d'un livre");
-            System.out.println("10. Generer rapport");
-            System.out.println("11. Quitter");
+            System.out.println("4. Afficher la liste complète des livres perdus");
+            System.out.println("5. Rechercher un livre par son titre ou son auteur");
+            System.out.println("6. Emprunter un livre ");
+            System.out.println("7. Retourner un livre emprunté");
+            System.out.println("8. Afficher la liste des livres empruntés");
+            System.out.println("9. Supprimer un livre de la bibliothèque");
+            System.out.println("10. Modifier les informations d'un livre");
+            System.out.println("11. Generer rapport");
+            System.out.println("12. Quitter");
             System.out.println(ConsoleColors.GREEN_BRIGHT + "****************************************************");
             System.out.print(ConsoleColors.WHITE_BRIGHT + "Choisissez une option : ");
 
@@ -107,10 +109,12 @@ public class Main {
 
                     break;
 
+
+
                 case 3:
 
 
-                    List<Livre> livres = (List<Livre>) livreModel.afficherLivreDispo();
+                    List<Livre> livres =  livreModel.afficherLivreDispo();
 
                     if (!livres.isEmpty()) {
                         for (Livre livree : livres) {
@@ -119,7 +123,6 @@ public class Main {
                             System.out.println("Auteur: " + livree.getAuteur());
                             System.out.println("Numéro ISBN: " + livree.getNumeroISBN());
                             System.out.println("Statut: " + livree.getStatut());
-//                System.out.println("##---------------------------------------------##"); // Add a newline for readability
                         }
                     } else {
                         System.out.println("No livres found.");
@@ -139,7 +142,37 @@ public class Main {
 
                     break;
 
-                case 4:
+                case 4 :
+
+                    List<Livre> livrees =  livreModel.afficherLivrePerdu();
+
+                    if (!livrees.isEmpty()) {
+                        for (Livre livree : livrees) {
+                            System.out.println("##----------------------------##"); // Add a newline for readability
+                            System.out.println("Titre: " + livree.getTitre());
+                            System.out.println("Auteur: " + livree.getAuteur());
+                            System.out.println("Numéro ISBN: " + livree.getNumeroISBN());
+                            System.out.println("Statut: " + livree.getStatut());
+                        }
+                    } else {
+                        System.out.println("No livres found.");
+                    }
+
+                    //-----------------------------------------------------------------------------------
+                    menu = false;
+                    System.out.println(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
+                    response = scannerStr.nextLine();
+                    if (response.equalsIgnoreCase("y")) {
+                        menu = true;
+                    } else if (response.equalsIgnoreCase("n")) {
+                        menu = false;
+                    } else {
+                        System.out.println("Réponse invalide.");
+                    }
+
+                    break;
+
+                case 5:
 
                     System.out.println("1 - Recherche livre par titre. ");
                     System.out.println("2 - Recherche livre par d'auteur. ");
@@ -204,12 +237,11 @@ public class Main {
 
                     break;
 
-                case 5:
-                    Livre book = new Livre();
+                case 6:
 
-                    Scanner input = new Scanner(System.in);
+                    Livre book = new Livre();
                     System.out.print("Entrez le ISBN de livre : ");
-                    int numeroISBN = Integer.parseInt(input.nextLine());
+                    int numeroISBN = scannerInt.nextInt();
                     Livre getLivre = livreModel.getLivreByIsbn(numeroISBN);
                     String statut = getLivre.getStatut();
                     book.setStatut(statut);
@@ -217,18 +249,16 @@ public class Main {
 
 
                     Utilisateur utilisateur = new Utilisateur();
-                    Scanner inputUtilisateur = new Scanner(System.in);
                     System.out.print("Entrez le nom d'utilisateur : ");
-                    String nom = input.nextLine();
+                    String nom = scannerStr.nextLine();
                     UtilisateurModel ModelUtilisateur = new UtilisateurModel();
                     Utilisateur utilisateurDetails = ModelUtilisateur.getUtilisateurByNom(nom);
                     int UtilisateurID = utilisateurDetails.getUtilisateurID();
                     utilisateur.setUtilisateurID(UtilisateurID);
 
                     Date dateEmprunt = new Date();
-                    Scanner inputDate = new Scanner(System.in);
                     System.out.print("Entrez la date de retour (YYYY-MM-DD) : ");
-                    String retour = input.nextLine();
+                    String retour = scannerStr.nextLine();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date dateRetour = dateFormat.parse(retour);
 
@@ -258,7 +288,7 @@ public class Main {
 
                     break;
 
-                case 6:
+                case 7:
                     System.out.print("Entrez le ISBN de livre : ");
                     int ISBNnumero = scannerInt.nextInt();
                     boolean retournerLivre = empruntModel.retournerLivre(ISBNnumero);
@@ -283,7 +313,7 @@ public class Main {
 
                     break;
 
-                case 7:
+                case 8:
 
 
                     List<livreEmprunte> listLivres = (List<livreEmprunte>) EmpruntModel.obtenirLivreEmprunte();
@@ -321,7 +351,7 @@ public class Main {
 
                     break;
 
-                case 8:
+                case 9:
 
                     System.out.print("Entrez le ISBN de livre : ");
                     int livreISBN = scannerInt.nextInt();
@@ -348,7 +378,7 @@ public class Main {
 
                     break;
 
-                case 9:
+                case 10:
 
                     System.out.println("1 - Modifier le titre de livre. ");
                     System.out.println("2 - Modifier l'auteur de livre. ");
@@ -410,7 +440,7 @@ public class Main {
 
                     break;
 
-                case 10:
+                case 11:
                     RapportModel rapportModel = new RapportModel();
                     int countLivreEmprunté = rapportModel.nombreLivreEmprunte();
                     int countLivreDisponible = rapportModel.nombrelivreDisponible();
@@ -439,7 +469,7 @@ public class Main {
 
                     break;
 
-                case 11:
+                case 12:
                     menu = false;
                     break;
 

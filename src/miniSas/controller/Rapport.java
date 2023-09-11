@@ -18,21 +18,7 @@ public class Rapport {
     public Rapport() {
     }
 
-    public int getStatistiqueLivreEmprunte() {
-        return statistiqueLivreEmprunte;
-    }
 
-    public int getStatistiqueLivreDisponible() {
-        return statistiqueLivreDisponible;
-    }
-
-    public int getStatistiqueLivrePerdu() {
-        return statistiqueLivrePerdu;
-    }
-
-    public int getNombreLivre() {
-        return nombreLivre;
-    }
 
 
 }

@@ -23,33 +23,15 @@ public class Emprunt {
         return livre;
     }
 
-    public void setLivre(Livre livre) {
-        this.livre = livre;
-    }
-
     public Utilisateur getEmprunteur() {
         return emprunteur;
     }
 
-    public void setEmprunteur(Utilisateur emprunteur) {
-        this.emprunteur = emprunteur;
-    }
 
     public Date getDateEmprunt() {
         return dateEmprunt;
     }
 
-    public void setDateEmprunt(Date dateEmprunt) {
-        this.dateEmprunt = dateEmprunt;
-    }
-
-    public Date getDateRetour() {
-        return dateRetour;
-    }
-
-    public void setDateRetour(Date dateRetour) {
-        this.dateRetour = dateRetour;
-    }
 
 
 

@@ -1,7 +1,6 @@
 package miniSas.model;
 
 import miniSas.controller.Utilisateur;
-import miniSas.model.DbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +13,7 @@ public class UtilisateurModel {
 
     Connection connecter = DbConnection.connecter();
 
-    public boolean ajouterUtilisateur(Utilisateur utilisateur) {
+    public void ajouterUtilisateur(Utilisateur utilisateur) {
         String sqlQuery = "INSERT INTO utilisateur (nom, prenom,numero) VALUES (?, ?,?);";
 
         try {
@@ -22,14 +21,12 @@ public class UtilisateurModel {
             prepare.setString(1, utilisateur.getNom());
             prepare.setString(2, utilisateur.getPrenom());
             prepare.setInt(3, utilisateur.getNumero());
-            int rowsUpdated = prepare.executeUpdate();
+            prepare.executeUpdate();
 
             prepare.close();
 
-            return rowsUpdated > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;
         }
     }
 
@@ -66,7 +63,7 @@ public class UtilisateurModel {
             return false;
         }
     }
-    
+
 
     public Utilisateur getUtilisateurByNom(String nom) {
         String sqlQuery = "SELECT * FROM utilisateur WHERE nom = ?;";

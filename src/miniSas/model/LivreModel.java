@@ -1,6 +1,5 @@
 package miniSas.model;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import miniSas.controller.Livre;
 
 import java.sql.Connection;
@@ -14,44 +13,34 @@ public class LivreModel {
 
     Connection connecter = DbConnection.connecter();
 
-    public boolean ajouterLivre(Livre livre){
+    public void ajouterLivre(Livre livre) {
 
         String sqlQuery = "INSERT INTO livre (titre,auteur,numeroISBN) VALUES (?,?,?);";
 
-        try{
+        try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
-            prepare.setString(1,livre.getTitre());
-            prepare.setString(2,livre.getAuteur());
-            prepare.setInt(3,livre.getNumeroISBN());
-            int rowsUpdated = prepare.executeUpdate();
+            prepare.setString(1, livre.getTitre());
+            prepare.setString(2, livre.getAuteur());
+            prepare.setInt(3, livre.getNumeroISBN());
+            prepare.executeUpdate();
 
             prepare.close();
 
-            if (rowsUpdated > 0) {
-                return true;
-            } else {
-                return false;
-            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;
         }
     }
 
-    public boolean modifierTitre(String titre , int numeroISBN ) {
+    public boolean modifierTitre(String titre, int numeroISBN) {
         String sqlQuery = "UPDATE livre SET titre=? WHERE numeroISBN=?";
 
         try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
-            prepare.setString(1,titre);
-            prepare.setInt(2,numeroISBN);
+            prepare.setString(1, titre);
+            prepare.setInt(2, numeroISBN);
             int rowsUpdated = prepare.executeUpdate();
             prepare.close();
-            if (rowsUpdated > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -59,27 +48,23 @@ public class LivreModel {
     }
 
 
-    public boolean modifierAuteur(String auteur , int numeroISBN ) {
+    public boolean modifierAuteur(String auteur, int numeroISBN) {
         String sqlQuery = "UPDATE livre SET auteur=? WHERE numeroISBN=?";
 
         try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
-            prepare.setString(1,auteur);
-            prepare.setInt(2,numeroISBN);
+            prepare.setString(1, auteur);
+            prepare.setInt(2, numeroISBN);
             int rowsUpdated = prepare.executeUpdate();
             prepare.close();
-            if (rowsUpdated > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public boolean supprimerByIsbn(int isbn){
+    public boolean supprimerByIsbn(int isbn) {
         String sqlQuery = "DELETE FROM livre WHERE numeroISBN = ?;";
         try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
@@ -88,17 +73,14 @@ public class LivreModel {
 
             prepare.close();
 
-            if (rowsUpdated > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
-    public Livre getLivreByIsbn(int isbn){
+
+    public Livre getLivreByIsbn(int isbn) {
         String sqlQuery = "SELECT * FROM livre WHERE numeroISBN = ?;";
 
         try {
@@ -113,7 +95,7 @@ public class LivreModel {
                 String auteur = resultSet.getString("auteur");
                 String statut = resultSet.getString("statut");
 
-                Livre livre = new Livre( titre, auteur, numeroIsbn,statut);
+                Livre livre = new Livre(titre, auteur, numeroIsbn, statut);
 
                 resultSet.close();
                 prepare.close();
@@ -145,7 +127,7 @@ public class LivreModel {
                 String auteur = result.getString("auteur");
                 String statut = result.getString("statut");
 
-                Livre livre = new Livre(titre, auteur, numeroISBN,statut);
+                Livre livre = new Livre(titre, auteur, numeroISBN, statut);
                 livres.add(livre);
             }
             result.close();
@@ -157,26 +139,21 @@ public class LivreModel {
 
         return livres;
     }
-
-
-    public List<Livre> afficherLivreEmprunte() {
+    public List<Livre> afficherLivrePerdu() {
         List<Livre> livres = new ArrayList<>();
 
-        String sqlQuery = "SELECT * from livre";
+        String sqlQuery = "SELECT * from livre WHERE statut = 'Perdu'";
         try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
-            ResultSet result = prepare.executeQuery();
 
+            ResultSet result = prepare.executeQuery();
             while (result.next()) {
                 int numeroISBN = result.getInt("numeroISBN");
                 String titre = result.getString("titre");
                 String auteur = result.getString("auteur");
                 String statut = result.getString("statut");
 
-                String emprunteur = result.getString("statut");
-
-
-                Livre livre = new Livre(titre, auteur, numeroISBN,statut);
+                Livre livre = new Livre(titre, auteur, numeroISBN, statut);
                 livres.add(livre);
             }
             result.close();
@@ -189,10 +166,11 @@ public class LivreModel {
         return livres;
     }
 
-    public List<Livre> rechercheLivreByTitre(String titre){
+
+    public List<Livre> rechercheLivreByTitre(String titre) {
         List<Livre> livres = new ArrayList<>();
         String sqlQuery = "SELECT * FROM livre WHERE titre = ?";
-        try{
+        try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
             prepare.setString(1, titre);
 
@@ -202,23 +180,23 @@ public class LivreModel {
                 String auteur = result.getString("auteur");
                 String statut = result.getString("statut");
 
-                Livre livre = new Livre(titre, auteur, numeroISBN,statut);
+                Livre livre = new Livre(titre, auteur, numeroISBN, statut);
                 livres.add(livre);
             }
             result.close();
             prepare.close();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
         }
-        return livres ;
+        return livres;
 
     }
 
-    public List<Livre> rechercheLivreByAuteur(String auteur){
+    public List<Livre> rechercheLivreByAuteur(String auteur) {
         List<Livre> livres = new ArrayList<>();
         String sqlQuery = "SELECT * FROM livre WHERE auteur = ?";
-        try{
+        try {
             PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
             prepare.setString(1, auteur);
 
@@ -228,16 +206,16 @@ public class LivreModel {
                 String titre = result.getString("titre");
                 String statut = result.getString("statut");
 
-                Livre livre = new Livre(titre, auteur, numeroISBN,statut);
+                Livre livre = new Livre(titre, auteur, numeroISBN, statut);
                 livres.add(livre);
             }
             result.close();
             prepare.close();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
         }
-        return livres ;
+        return livres;
 
     }
 

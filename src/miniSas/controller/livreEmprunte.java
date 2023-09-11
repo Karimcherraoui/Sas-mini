@@ -12,8 +12,6 @@ public class livreEmprunte {
         private String dateRetour;
 
         // Constructors
-        public livreEmprunte() {
-        }
 
         public livreEmprunte(String titre, String auteur, String nom, String prenom,int numero , String dateEmprunt, String dateRetour) {
             this.titre = titre;
