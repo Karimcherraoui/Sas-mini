@@ -26,8 +26,10 @@ CREATE TABLE Emprunt
     emprunteur_id INT,
     dateEmprunt   DATE,
     dateRetour    DATE,
-    FOREIGN KEY (livre_ISBN) REFERENCES Livre (numeroISBN),
-    FOREIGN KEY (emprunteur_id) REFERENCES Utilisateur (id)
+    FOREIGN KEY (livre_ISBN) REFERENCES Livre (numeroISBN) ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (emprunteur_id) REFERENCES Utilisateur (id) ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 DELIMITER //

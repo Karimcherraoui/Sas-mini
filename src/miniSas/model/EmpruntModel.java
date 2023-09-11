@@ -49,6 +49,26 @@ public class EmpruntModel {
 
     }
 
+    public boolean checkEmpruntUtilisateur(int utilisateurId){
+        String sqlQuery = "SELECT * FROM emprunt WHERE emprunteur_id = ? ;";
+
+
+        try{
+            PreparedStatement prepare = connecter.prepareStatement(sqlQuery);
+            prepare.setInt(1, utilisateurId);
+            ResultSet resultat = prepare.executeQuery();
+            if(resultat.next()){
+                return true;
+            }
+
+        }catch(SQLException e){
+
+        }
+
+        return false;
+
+    }
+
     public boolean retournerLivre(int livre_ISBN) {
 
         String sqlQuery = "DELETE FROM Emprunt WHERE livre_ISBN = ?;";

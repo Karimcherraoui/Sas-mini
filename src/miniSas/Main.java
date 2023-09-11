@@ -110,26 +110,28 @@ public class Main {
                     break;
 
 
-
                 case 3:
 
 
-                    List<Livre> livres =  livreModel.afficherLivreDispo();
+                    List<Livre> livres = livreModel.afficherLivreDispo();
 
                     if (!livres.isEmpty()) {
                         for (Livre livree : livres) {
-                            System.out.println("##----------------------------##"); // Add a newline for readability
-                            System.out.println("Titre: " + livree.getTitre());
-                            System.out.println("Auteur: " + livree.getAuteur());
-                            System.out.println("Numéro ISBN: " + livree.getNumeroISBN());
-                            System.out.println("Statut: " + livree.getStatut());
+                            System.out.println(ConsoleColors.BLUE_BRIGHT + "##----------------------------##"); // Add a newline for readability
+                            System.out.println(ConsoleColors.YELLOW_BRIGHT + "Titre: " + ConsoleColors.WHITE_BRIGHT + livree.getTitre());
+                            System.out.println(ConsoleColors.YELLOW_BRIGHT + "Auteur: " + ConsoleColors.WHITE_BRIGHT + livree.getAuteur());
+                            System.out.println(ConsoleColors.YELLOW_BRIGHT + "Numéro ISBN: " + ConsoleColors.WHITE_BRIGHT + livree.getNumeroISBN());
+                            System.out.println(ConsoleColors.YELLOW_BRIGHT + "Statut: " + ConsoleColors.WHITE_BRIGHT + livree.getStatut());
+
                         }
+
                     } else {
                         System.out.println("No livres found.");
                     }
 
                     //-----------------------------------------------------------------------------------
                     menu = false;
+                    System.out.println(ConsoleColors.BLUE_BRIGHT + "##----------------------------##"); // Add a newline for readability
                     System.out.println(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
                     response = scannerStr.nextLine();
                     if (response.equalsIgnoreCase("y")) {
@@ -142,17 +144,18 @@ public class Main {
 
                     break;
 
-                case 4 :
+                case 4:
 
-                    List<Livre> livrees =  livreModel.afficherLivrePerdu();
+                    List<Livre> livrees = livreModel.afficherLivrePerdu();
 
                     if (!livrees.isEmpty()) {
                         for (Livre livree : livrees) {
-                            System.out.println("##----------------------------##"); // Add a newline for readability
-                            System.out.println("Titre: " + livree.getTitre());
-                            System.out.println("Auteur: " + livree.getAuteur());
-                            System.out.println("Numéro ISBN: " + livree.getNumeroISBN());
-                            System.out.println("Statut: " + livree.getStatut());
+                            System.out.println(ConsoleColors.BLUE_BRIGHT + "##---------------------------------##"); // Add a newline for readability
+                            System.out.println(ConsoleColors.YELLOW_BRIGHT + "Titre: " + ConsoleColors.WHITE_BRIGHT + livree.getTitre());
+                            System.out.println(ConsoleColors.YELLOW_BRIGHT + "Auteur: " + ConsoleColors.WHITE_BRIGHT + livree.getAuteur());
+                            System.out.println(ConsoleColors.YELLOW_BRIGHT + "Numéro ISBN: " + ConsoleColors.WHITE_BRIGHT + livree.getNumeroISBN());
+                            System.out.println(ConsoleColors.YELLOW_BRIGHT + "Statut: " + ConsoleColors.WHITE_BRIGHT + livree.getStatut());
+
                         }
                     } else {
                         System.out.println("No livres found.");
@@ -160,6 +163,7 @@ public class Main {
 
                     //-----------------------------------------------------------------------------------
                     menu = false;
+                    System.out.println(ConsoleColors.BLUE_BRIGHT + "##---------------------------------##"); // Add a newline for readability
                     System.out.println(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
                     response = scannerStr.nextLine();
                     if (response.equalsIgnoreCase("y")) {
@@ -188,10 +192,10 @@ public class Main {
                         List<Livre> listlivres = livreModel.rechercheLivreByTitre(titreLivre);
                         if (!listlivres.isEmpty()) {
                             for (Livre livree : listlivres) {
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Titre: " + livree.getTitre());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Auteur: " + livree.getAuteur());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Numéro ISBN: " + livree.getNumeroISBN());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Statut: " + livree.getStatut());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Titre: " +ConsoleColors.WHITE_BRIGHT + livree.getTitre());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Auteur: " +ConsoleColors.WHITE_BRIGHT+ livree.getAuteur());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Numéro ISBN: " +ConsoleColors.WHITE_BRIGHT+ livree.getNumeroISBN());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Statut: " +ConsoleColors.WHITE_BRIGHT+ livree.getStatut());
                                 System.out.println(ConsoleColors.YELLOW_BRIGHT + "##--------------------------------------------------##"); // Add a newline for readability
 
                             }
@@ -201,17 +205,17 @@ public class Main {
                     } else if (inputChoix == 2) {
                         System.out.print("Entrez l'auteur de livre : ");
                         String auteurLivre = scannerStr.nextLine();
-                        System.out.println("##----------------------------##"); // Add a newline for readability
+                        System.out.println(ConsoleColors.YELLOW_BRIGHT + "##--------------------------------------------------##"); // Add a newline for readability
 
 
                         List<Livre> Listlivres = livreModel.rechercheLivreByAuteur(auteurLivre);
                         if (!Listlivres.isEmpty()) {
                             for (Livre livree : Listlivres) {
-                                System.out.println(ConsoleColors.WHITE_BRIGHT + "Titre: " + livree.getTitre());
-                                System.out.println("Auteur: " + livree.getAuteur());
-                                System.out.println("Numéro ISBN: " + livree.getNumeroISBN());
-                                System.out.println("Statut: " + livree.getStatut());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "##----------------------------##"); // Add a newline for readability
+                                System.out.println(ConsoleColors.GREEN_BRIGHT +  "Titre: "+ConsoleColors.WHITE_BRIGHT + livree.getTitre());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Auteur: " +ConsoleColors.WHITE_BRIGHT+ livree.getAuteur());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Numéro ISBN: " +ConsoleColors.WHITE_BRIGHT+ livree.getNumeroISBN());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Statut: " +ConsoleColors.WHITE_BRIGHT+ livree.getStatut());
+                                System.out.println(ConsoleColors.YELLOW_BRIGHT + "##--------------------------------------------------##"); // Add a newline for readability
 
                             }
                         } else {
@@ -255,6 +259,13 @@ public class Main {
                     Utilisateur utilisateurDetails = ModelUtilisateur.getUtilisateurByNom(nom);
                     int UtilisateurID = utilisateurDetails.getUtilisateurID();
                     utilisateur.setUtilisateurID(UtilisateurID);
+                    if (empruntModel.checkEmpruntUtilisateur(UtilisateurID)) {
+                        System.out.println(ConsoleColors.RED_BRIGHT + "##------------------------------------##"); // Add a newline for readability
+                        System.out.println("Utilisateur déjà emprunté le livre.");
+                        System.out.println("##------------------------------------##"); // Add a newline for readability
+
+                        break;
+                    }
 
                     Date dateEmprunt = new Date();
                     System.out.print("Entrez la date de retour (YYYY-MM-DD) : ");
@@ -270,7 +281,7 @@ public class Main {
                     if (empruntReussi) {
                         System.out.println("Livre emprunté avec succès !");
                     } else {
-                        System.out.println("L'emprunt du livre a échoué en raison d'une location existante ou d'une erreur.");
+                        System.out.println("L'emprunt du livre a échoué en raison soit d'une location déjà en cours, soit d'une erreur.");
                     }
 
                     //-----------------------------------------------------------------------------------
@@ -334,7 +345,7 @@ public class Main {
 
                         }
                     } else {
-                        System.out.println("Aucun livre emprunté");
+                        System.out.println("Aucun livre n'a été emprunté.");
                     }
 
                     //-----------------------------------------------------------------------------------
@@ -452,7 +463,7 @@ public class Main {
                     System.out.println(ConsoleColors.BLUE_BRIGHT + "--------------------------------------------------------------------------");
                     System.out.println(ConsoleColors.GREEN_BRIGHT + "| Livres Empruntés   | Livres Disponibles | Livres Perdus | Total Livres |");
                     System.out.println(ConsoleColors.BLUE_BRIGHT + "--------------------------------------------------------------------------");
-                    System.out.println(ConsoleColors.WHITE_BRIGHT + "|          " + countLivreEmprunté + "         |          " + countLivreDisponible + "         |       " + countLivrePerdu+ "       |       " + countLivre + "      |");
+                    System.out.println(ConsoleColors.WHITE_BRIGHT + "|          " + countLivreEmprunté + "         |          " + countLivreDisponible + "         |       " + countLivrePerdu + "       |       " + (countLivre - countLivrePerdu)  +  "      |");
 
 
                     //-----------------------------------------------------------------------------------
