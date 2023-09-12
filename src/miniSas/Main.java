@@ -15,7 +15,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import static miniSas.model.RapportModel.creerRapportFile;
+import static miniSas.model.RapportModel.genererRapport;
+
 public class Main {
+    public static int choixUtilisateur() {
+        Scanner scannerInt = new Scanner(System.in);
+        int choix = 0;
+        do {
+            try {
+                System.out.print(ConsoleColors.WHITE_BRIGHT + "Choisissez une option : ");
+                choix = scannerInt.nextInt();
+                scannerInt.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                scannerInt.next();
+                choix = 0;
+                System.out.println(ConsoleColors.RED_BRIGHT+("Choix incorrect. S'il vous plaît, entrez un nombre."));
+            }
+        } while (choix < 1 || choix > 12);
+        return choix;
+    }
     public static void main(String[] args) throws ParseException, SQLException, IOException {
         Scanner scannerInt = new Scanner(System.in);
         Scanner scannerStr = new Scanner(System.in);
@@ -46,11 +65,8 @@ public class Main {
             System.out.println("11. Generer rapport");
             System.out.println("12. Quitter");
             System.out.println(ConsoleColors.GREEN_BRIGHT + "****************************************************");
-            System.out.print(ConsoleColors.WHITE_BRIGHT + "Choisissez une option : ");
 
-
-            int choix = scannerInt.nextInt();
-
+            int choix = choixUtilisateur();
 
             switch (choix) {
                 case 1:
@@ -95,17 +111,7 @@ public class Main {
                     utilisateurModel.ajouterUtilisateur(nvUtilisateur);
 
 
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.print(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.next();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
+
 
                     break;
 
@@ -129,18 +135,7 @@ public class Main {
                         System.out.println("No livres found.");
                     }
 
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.println(ConsoleColors.BLUE_BRIGHT + "##----------------------------##"); // Add a newline for readability
-                    System.out.println(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
+
 
                     break;
 
@@ -161,18 +156,7 @@ public class Main {
                         System.out.println("No livres found.");
                     }
 
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.println(ConsoleColors.BLUE_BRIGHT + "##---------------------------------##"); // Add a newline for readability
-                    System.out.println(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
+
 
                     break;
 
@@ -181,8 +165,7 @@ public class Main {
                     System.out.println("1 - Recherche livre par titre. ");
                     System.out.println("2 - Recherche livre par d'auteur. ");
                     System.out.println(ConsoleColors.GREEN_BRIGHT + "****************************************************");
-                    System.out.print(ConsoleColors.WHITE_BRIGHT + "Choisissez une option : ");
-                    int inputChoix = scannerInt.nextInt();
+                    int inputChoix = choixUtilisateur();
                     if (inputChoix == 1) {
                         System.out.print("Entrez le titre de livre : ");
                         String titreLivre = scannerStr.nextLine();
@@ -192,10 +175,10 @@ public class Main {
                         List<Livre> listlivres = livreModel.rechercheLivreByTitre(titreLivre);
                         if (!listlivres.isEmpty()) {
                             for (Livre livree : listlivres) {
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Titre: " +ConsoleColors.WHITE_BRIGHT + livree.getTitre());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Auteur: " +ConsoleColors.WHITE_BRIGHT+ livree.getAuteur());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Numéro ISBN: " +ConsoleColors.WHITE_BRIGHT+ livree.getNumeroISBN());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Statut: " +ConsoleColors.WHITE_BRIGHT+ livree.getStatut());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Titre: " + ConsoleColors.WHITE_BRIGHT + livree.getTitre());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Auteur: " + ConsoleColors.WHITE_BRIGHT + livree.getAuteur());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Numéro ISBN: " + ConsoleColors.WHITE_BRIGHT + livree.getNumeroISBN());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Statut: " + ConsoleColors.WHITE_BRIGHT + livree.getStatut());
                                 System.out.println(ConsoleColors.YELLOW_BRIGHT + "##--------------------------------------------------##"); // Add a newline for readability
 
                             }
@@ -211,10 +194,10 @@ public class Main {
                         List<Livre> Listlivres = livreModel.rechercheLivreByAuteur(auteurLivre);
                         if (!Listlivres.isEmpty()) {
                             for (Livre livree : Listlivres) {
-                                System.out.println(ConsoleColors.GREEN_BRIGHT +  "Titre: "+ConsoleColors.WHITE_BRIGHT + livree.getTitre());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Auteur: " +ConsoleColors.WHITE_BRIGHT+ livree.getAuteur());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Numéro ISBN: " +ConsoleColors.WHITE_BRIGHT+ livree.getNumeroISBN());
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Statut: " +ConsoleColors.WHITE_BRIGHT+ livree.getStatut());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Titre: " + ConsoleColors.WHITE_BRIGHT + livree.getTitre());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Auteur: " + ConsoleColors.WHITE_BRIGHT + livree.getAuteur());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Numéro ISBN: " + ConsoleColors.WHITE_BRIGHT + livree.getNumeroISBN());
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Statut: " + ConsoleColors.WHITE_BRIGHT + livree.getStatut());
                                 System.out.println(ConsoleColors.YELLOW_BRIGHT + "##--------------------------------------------------##"); // Add a newline for readability
 
                             }
@@ -223,21 +206,8 @@ public class Main {
                         }
 
                     } else {
-                        System.out.println("Option introuvable. ");
+                        System.out.println(ConsoleColors.YELLOW_BRIGHT+"Option introuvable. ");
                     }
-
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.print(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
-
 
                     break;
 
@@ -284,18 +254,6 @@ public class Main {
                         System.out.println("L'emprunt du livre a échoué en raison soit d'une location déjà en cours, soit d'une erreur.");
                     }
 
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.print(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
-
 
                     break;
 
@@ -309,17 +267,7 @@ public class Main {
                         System.out.println("Une erreur est survenue.");
                     }
 
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.print(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
+
 
 
                     break;
@@ -348,17 +296,7 @@ public class Main {
                         System.out.println("Aucun livre n'a été emprunté.");
                     }
 
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.print(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
+
 
                     break;
 
@@ -375,17 +313,6 @@ public class Main {
 
                     }
 
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.print(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
 
                     break;
 
@@ -394,8 +321,7 @@ public class Main {
                     System.out.println("1 - Modifier le titre de livre. ");
                     System.out.println("2 - Modifier l'auteur de livre. ");
                     System.out.println(ConsoleColors.GREEN_BRIGHT + "****************************************************");
-                    System.out.print(ConsoleColors.WHITE_BRIGHT + "Choisissez une option : ");
-                    int inputDeChoix = scannerInt.nextInt();
+                    int inputDeChoix = choixUtilisateur();
                     if (inputDeChoix == 1) {
                         System.out.print("Entrez le ISBN de livre : ");
                         int numero_ISBN = scannerInt.nextInt();
@@ -434,20 +360,9 @@ public class Main {
                         }
 
                     } else {
-                        System.out.println("Option introuvable. ");
+                        System.out.println(ConsoleColors.YELLOW_BRIGHT+"Option introuvable. ");
                     }
 
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.print(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
 
                     break;
 
@@ -459,35 +374,33 @@ public class Main {
                     int countLivre = rapportModel.afficheTousLivre();
 
                     System.out.println(ConsoleColors.BLUE_BRIGHT + "--------------------------------------------------------------------------");
-                    System.out.println(ConsoleColors.YELLOW_BRIGHT + "|                       STATISTIQUE                     |");
+                    System.out.println(ConsoleColors.YELLOW_BRIGHT + "|                           STATISTIQUE                                  |");
                     System.out.println(ConsoleColors.BLUE_BRIGHT + "--------------------------------------------------------------------------");
                     System.out.println(ConsoleColors.GREEN_BRIGHT + "| Livres Empruntés   | Livres Disponibles | Livres Perdus | Total Livres |");
                     System.out.println(ConsoleColors.BLUE_BRIGHT + "--------------------------------------------------------------------------");
-                    System.out.println(ConsoleColors.WHITE_BRIGHT + "|          " + countLivreEmprunté + "         |          " + countLivreDisponible + "         |       " + countLivrePerdu + "       |       " + (countLivre - countLivrePerdu)  +  "      |");
+                    System.out.println(ConsoleColors.WHITE_BRIGHT + "|          " + countLivreEmprunté + "         |          " + countLivreDisponible + "         |       " + countLivrePerdu + "       |       " + (countLivre - countLivrePerdu) + "      |");
 
-
-                    //-----------------------------------------------------------------------------------
-                    menu = false;
-                    System.out.print(ConsoleColors.RED_BRIGHT + "Voulez-vous continuer (y/n) ? ");
-                    response = scannerStr.nextLine();
-                    if (response.equalsIgnoreCase("y")) {
-                        menu = true;
-                    } else if (response.equalsIgnoreCase("n")) {
-                        menu = false;
-                    } else {
-                        System.out.println("Réponse invalide.");
-                    }
+                    String report = genererRapport();
+                    creerRapportFile(report);
+                    System.out.println("Rapport enregistré avec succès.");
 
                     break;
 
                 case 12:
                     menu = false;
+
                     break;
 
 
                 default:
 
                     break;
+            }
+            System.out.println(ConsoleColors.RED_BRIGHT + "##---------------------------##");
+            System.out.print(ConsoleColors.RED_BRIGHT+"Voulez-vous continuer (y/n) ? ");
+            String Response = scannerStr.nextLine();
+            if (!Response.equalsIgnoreCase("y")) {
+                menu = false;
             }
         }
 

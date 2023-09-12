@@ -31,6 +31,9 @@ public class LivreModel {
         }
     }
 
+
+
+
     public boolean modifierTitre(String titre, int numeroISBN) {
         String sqlQuery = "UPDATE livre SET titre=? WHERE numeroISBN=?";
 
